@@ -15,7 +15,7 @@
  * 4) for numbers which are multiples of both three and five return 'FizzBuzz'
  *
  * @param {number} num
- * @return {any}
+ * @return {string}
  *
  * @example
  *   2 =>  2
@@ -27,8 +27,9 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  // eslint-disable-next-line no-nested-ternary
+  return (num % 3 === 0 && num % 5 === 0) ? 'FizzBuzz' : (num % 3 === 0) ? 'Fizz' : (num % 5 === 0) ? 'Buzz' : num;
 }
 
 
@@ -43,10 +44,13 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  const array = [];
+  for (let i = 1; i <= n; i += 1) {
+    array.push(i);
+  }
+  return array.reduce((a, b) => a * b, 1);
 }
-
 
 /**
  * Returns the sum of integer numbers between n1 and n2 (inclusive).
@@ -60,10 +64,13 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  const array = [];
+  for (let i = n1; i <= n2; i += 1) {
+    array.push(i);
+  }
+  return array.reduce((a, b) => a + b);
 }
-
 
 /**
  * Returns true, if a triangle can be built with the specified sides a, b, c
@@ -80,8 +87,8 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return (a + b > c && a + c > b && c + b > a);
 }
 
 
@@ -157,17 +164,22 @@ function isInsideCircle(/* circle, point */) {
  * Returns the first non repeated char in the specified strings otherwise returns null.
  *
  * @param {string} str
- * @return {string}
+ * @return {null}
  *
  * @example:
  *   'The quick brown fox jumps over the lazy dog' => 'T'
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i += 1) {
+    const c = str.charAt(i);
+    if (str.indexOf(c) === i && str.indexOf(c, i + 1) === -1) {
+      return c;
+    }
+  }
+  return null;
 }
-
 
 /**
  * Returns the string representation of math interval,
@@ -191,10 +203,9 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  return `${isStartIncluded ? '[' : '('}${Math.min(a, b)}, ${Math.max(a, b)}${isEndIncluded ? ']' : ')'}`;
 }
-
 
 /**
  * Reverse the specified string (put all chars in reverse order)
@@ -208,10 +219,9 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
-
 
 /**
  * Reverse the specified integer number (put all digits in reverse order)
@@ -225,8 +235,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -260,7 +270,7 @@ function isCreditCardNumber(/* ccn */) {
  *   step2 : if sum > 9 then goto step1 otherwise return the sum
  *
  * @param {number} n
- * @return {number}
+ * @return {string}
  *
  * @example:
  *   12345 ( 1+2+3+4+5 = 15, 1+5 = 6) => 6
@@ -268,8 +278,13 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  return num.toString()
+    .split('')
+    .reduce((sum, item) => sum + Number(item), 0)
+    .toString()
+    .split('')
+    .reduce((sum, item) => sum + Number(item), 0);
 }
 
 
@@ -294,8 +309,30 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const pairsBrackets = [];
+  // eslint-disable-next-line no-unused-vars
+  let result = null;
+
+  [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>'], ['|', '|']].forEach((item) => {
+    pairsBrackets.push(item.join(''));
+  });
+  // eslint-disable-next-line no-shadow
+  const getResult = (pairsBrackets, str, count = 0) => {
+    if (str.indexOf(pairsBrackets[count]) !== -1) {
+      // eslint-disable-next-line no-param-reassign
+      str = str.replace(pairsBrackets[count], '');
+      // eslint-disable-next-line no-param-reassign,no-return-assign
+      return getResult(pairsBrackets, str, count = 0);
+    } if (count < pairsBrackets.length) {
+      // eslint-disable-next-line no-param-reassign,no-plusplus
+      count++;
+      return getResult(pairsBrackets, str, count);
+    }
+    // eslint-disable-next-line no-return-assign
+    return (str) ? result = false : result = true;
+  };
+  return getResult(pairsBrackets, str);
 }
 
 
@@ -319,10 +356,9 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
-
 
 /**
  * Returns the commom directory path for specified array of full filenames.
@@ -336,8 +372,21 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const splitStrings = (a, sep = '/') => a.map((i) => i.split(sep));
+
+  const elAt = (i) => (a) => a[i];
+
+  const rotate = (a) => a[0].map((e, i) => a.map(elAt(i)));
+
+  const allElementsEqual = (arr) => arr.every((e) => e === arr[0]);
+
+  const hasRoot = (arr) => arr.every((e) => e[0] === '/');
+
+  const commonPath = (input, sep = '/') => rotate(splitStrings(input, sep))
+    .filter(allElementsEqual).map(elAt(0)).join(sep);
+  // eslint-disable-next-line no-nested-ternary
+  return (commonPath(pathes)) ? `${commonPath(pathes)}/` : (hasRoot(pathes)) ? '/' : '';
 }
 
 
@@ -359,10 +408,25 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const aNumRows = m1.length;
+  const aNumCols = m1[0].length;
+  const bNumCols = m2[0].length;
+  const m = new Array(aNumRows);
+  // eslint-disable-next-line no-plusplus
+  for (let r = 0; r < aNumRows; ++r) {
+    m[r] = new Array(bNumCols);
+    // eslint-disable-next-line no-plusplus
+    for (let c = 0; c < bNumCols; ++c) {
+      m[r][c] = 0;
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < aNumCols; ++i) {
+        m[r][c] += m1[r][i] * m2[i][c];
+      }
+    }
+  }
+  return m;
 }
-
 
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
@@ -394,10 +458,59 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
-}
+function evaluateTicTacToePosition(position) {
+  const X = 'X';
+  const O = '0';
+  const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [6, 4, 2],
+  ];
 
+  const newArr = position.map((item) => {
+    if (item.length < 3) {
+      return [...item, undefined];
+    }
+    return item;
+  });
+  const getIndexes = (char, arr) => {
+    const results = [];
+    arr.forEach((item, index) => {
+      if (item === char) {
+        results.push(index);
+      }
+    });
+    return results;
+  };
+
+  const compareArr = (conditions, indexes) => {
+    let result = false;
+    // eslint-disable-next-line consistent-return
+    conditions.forEach((item) => {
+      if (item.every((elem) => indexes.indexOf(elem) !== -1)) {
+        // eslint-disable-next-line no-return-assign
+        return result = true;
+      }
+    });
+    return result;
+  };
+
+  const getRes = () => {
+    if (compareArr(winConditions, getIndexes(O, newArr.flat()))) {
+      return '0';
+    } if (compareArr(winConditions, getIndexes(X, newArr.flat()))) {
+      return 'X';
+    }
+    return undefined;
+  };
+
+  return getRes();
+}
 
 module.exports = {
   getFizzBuzz,
